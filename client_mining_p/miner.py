@@ -65,7 +65,7 @@ if __name__ == '__main__':
             print("Error:  Non-json response")
             print("Response returned:")
             print(r)
-            break
+            continue
 
         # TODO: Get the block from `data` and use it to look for a new proof
         lblock = data['last_block']
@@ -76,19 +76,22 @@ if __name__ == '__main__':
         post_data = {"proof": new_proof, "id": id}
 
         re = requests.post(url=node + "/mine", json=post_data)
-        new_data = re.json()
+        try: 
+            new_data = re.json()
 
-        # TODO: If the server responds with a 'message' 'New Block Forged'
-        # add 1 to the number of coins mined and print it.  Otherwise,
-        # print the message from the server.
-        if new_data["message"] == "Success":
-            time_stop = time.time()
-            print(f"Finished searching, Time: {(time_stop - time_start):1f}")
-            coins += 1
-            # playsound('coin.mp3')
-            print(f'Coins mined: {coins}')
-            print(new_data['message'])
-        else:
-            time_stop = timeit.timeit()
-            print(f"Finished searching, Time: {(time_stop - time_start):1f}")
-            print(new_data["message"])
+            # TODO: If the server responds with a 'message' 'New Block Forged'
+            # add 1 to the number of coins mined and print it.  Otherwise,
+            # print the message from the server.
+            if new_data["message"] == "Success":
+                time_stop = time.time()
+                print(f"Finished searching, Time: {(time_stop - time_start):1f}")
+                coins += 1
+                # playsound('coin.mp3')
+                print(f'Coins mined: {coins}')
+                print(new_data['message'])
+            else:
+                time_stop = timeit.timeit()
+                print(f"Finished searching, Time: {(time_stop - time_start):1f}")
+                print(new_data["message"])
+        except:
+            print("None JSON Response")
