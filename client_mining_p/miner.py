@@ -1,7 +1,8 @@
 import hashlib
 import requests
+from playsound import playsound
 
-import timeit
+import time
 import sys
 import json
 
@@ -51,6 +52,7 @@ if __name__ == '__main__':
     id = f.read()
     print("ID is", id)
     f.close()
+
     coins = 0
     # Run forever until interrupted
     while True:
@@ -67,10 +69,9 @@ if __name__ == '__main__':
 
         # TODO: Get the block from `data` and use it to look for a new proof
         lblock = data['last_block']
-        # time_start = lblock['timestamp']
+        time_start = time.time()
         print("Started searching ")
         new_proof = proof_of_work(lblock)
-        # time_stop = timeit.timeit()
         # When found, POST it to the server {"proof": new_proof, "id": id}
         post_data = {"proof": new_proof, "id": id}
 
@@ -80,11 +81,14 @@ if __name__ == '__main__':
         # TODO: If the server responds with a 'message' 'New Block Forged'
         # add 1 to the number of coins mined and print it.  Otherwise,
         # print the message from the server.
-        print("MESSAGE", new_data[0]["message"])
-        if new_data[0]["message"] == "Success":
-            
-            # print(f"Finished searching, Time: {time_stop - time_start}")
+        if new_data["message"] == "Success":
+            time_stop = time.time()
+            print(f"Finished searching, Time: {(time_stop - time_start):1f}")
             coins += 1
+            # playsound('coin.mp3')
             print(f'Coins mined: {coins}')
+            print(new_data['message'])
         else:
-            print(new_data[0]["message"])
+            time_stop = timeit.timeit()
+            print(f"Finished searching, Time: {(time_stop - time_start):1f}")
+            print(new_data["message"])

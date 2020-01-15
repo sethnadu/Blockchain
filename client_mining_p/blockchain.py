@@ -132,7 +132,7 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['POST'])
 def mine():
     data = request.get_json()
-    print("blockchain")
+    print("blockchain", data)
     if data['id'] and data['proof']:
         proof = data['proof']
         block_string = json.dumps(blockchain.last_block, sort_keys=True)
@@ -142,17 +142,17 @@ def mine():
             message = {
                 'message': 'Success'
             }
-            return jsonify(message, 200)
+            return jsonify(message), 200
         else:
             message = {
-            'message': 'Failure'
+            'message': 'Failure validing proof'
             }
-            return jsonify(message, 400)
+            return jsonify(message), 400
     else:
         message = {
             'message': 'Failure'
         }
-        return jsonify(message, 400)
+        return jsonify(message), 400
 
 @app.route('/last_block', methods=['GET'])
 def last_block_chain():
