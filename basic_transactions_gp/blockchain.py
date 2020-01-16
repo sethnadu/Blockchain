@@ -123,6 +123,7 @@ class Blockchain(object):
 # Instantiate our Node
 app = Flask(__name__)
 
+
 # Generate a globally unique address for this node
 node_identifier = str(uuid4()).replace('-', '')
 
@@ -164,7 +165,7 @@ def mine():
             blockchain.new_transaction(
                 sender = '0',
                 recipient = data['id'],
-                amount = 100
+                amount = 1
             )
 
             message = {
@@ -183,24 +184,36 @@ def mine():
         }
         return jsonify(message), 400
 
+# @app.route('/change_id', methods=['POST'])
+# def change_id():
+#     data = request.get_json()
+
+#     if data['new_id']:
+#         id = data['new_id']
+#     response = {
+#         "new_id": f"ID was changed to {id}."
+#     }
+#     # print(response)
+#     return jsonify(response), 200
+
 @app.route('/last_block', methods=['GET'])
 def last_block_chain():
     block = blockchain.last_block
-    response = {
-        "last_block": block
-    }
-    # print(response)
-    return jsonify(response), 200
+    response = jsonify({"last_block": block})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response, 200
 
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
-    response = {
+    response = jsonify({
         # TODO: Return the chain and its current length
         'length': len(blockchain.chain),
         "chain": blockchain.chain
-    }
-    return jsonify(response), 200
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response, 200
 
 
 # Run the program on port 5000

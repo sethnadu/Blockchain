@@ -48,10 +48,10 @@ if __name__ == '__main__':
         node = "http://localhost:5000"
 
     # Load ID
-    f = open("my_id.txt", "r")
-    id = f.read()
-    print("ID is", id)
-    f.close()
+    # f = open("my_id.txt", "r")
+    id = 'seth nadu'
+    # print("ID is", id)
+    # f.close()
 
     coins = 0
     # Run forever until interrupted
