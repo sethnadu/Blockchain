@@ -70,6 +70,7 @@ if __name__ == '__main__':
         # TODO: Get the block from `data` and use it to look for a new proof
         lblock = data['last_block']
         time_start = time.time()
+        print('**********************************')
         print("Started searching ")
         new_proof = proof_of_work(lblock)
         # When found, POST it to the server {"proof": new_proof, "id": id}
@@ -84,11 +85,20 @@ if __name__ == '__main__':
             # print the message from the server.
             if new_data["message"] == "Success":
                 time_stop = time.time()
+                print('')
                 print(f"Finished searching, Time: {(time_stop - time_start):1f}")
                 coins += 1
                 # playsound('coin.mp3')
-                print(f'Coins mined: {coins}')
                 print(new_data['message'])
+                print(f'Coins mined: {coins}')
+                print('')
+                print("--------- Last Block ---------")
+                print("Index: ", new_data['block']['index'])
+                print("Previous Hash: ", new_data['block']['previous_hash'])
+                print("Proof: ", new_data['block']['proof'])
+                print("TimeStamp: ", new_data['block']['timestamp'])
+                print("Transactions: ", new_data['block']['transactions'])
+                print("")
             else:
                 time_stop = timeit.timeit()
                 print(f"Finished searching, Time: {(time_stop - time_start):1f}")
